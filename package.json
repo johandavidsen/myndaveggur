@@ -1,0 +1,17 @@
+{
+  "name": "ravnur-client",
+  "version": "0.1.0",
+  "description": "This is the client project for the web application Ravnur.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "React"
+  ],
+  "author": "Jóhan Davidsen <johan.davidsen@fjakkarin.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^1.13.2"
+  }
+}
