@@ -1,7 +1,7 @@
 {
-  "name": "ravnur-client",
+  "name": "Myndaveggur",
   "version": "0.1.0",
-  "description": "This is the client project for the web application Ravnur.",
+  "description": "This is a small webapp called Myndaveggur",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -26,7 +26,6 @@
     "babel-preset-stage-0": "^6.5.0",
     "classnames": "^2.2.5",
     "cross-env": "^2.0.1",
-    "modernizr-webpack-plugin": "^1.0.5",
     "node-sass": "^3.10.1",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
