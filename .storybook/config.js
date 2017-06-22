@@ -1,7 +1,7 @@
 import { configure } from '@kadira/storybook'
 
 function loadStories () {
-  require('../scripts/stories/photoWall')
+  require('../story/photoWall')
 }
 
 configure(loadStories, module)

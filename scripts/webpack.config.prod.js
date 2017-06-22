@@ -30,8 +30,8 @@ module.exports = {
         exclude: /(node_modules)/,
         include: path.join(__dirname, '../src')
       },
-      { test: /\.css?$/, loaders: [ 'style', 'raw' ], include: path.resolve(__dirname, '../') },
-      { test: /\.scss$/, include: /src/, loaders: [ 'style', 'css', 'sass' ] }
+      { test: /\.css?$/, loaders: [ 'style-loader', 'raw-loader' ], include: path.resolve(__dirname, '../') },
+      { test: /\.scss$/, include: /src/, loaders: [ 'style-loader', 'css-loader', 'sass-loader' ] }
     ]
   }
 }
