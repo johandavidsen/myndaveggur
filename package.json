@@ -18,7 +18,7 @@
   "author": "Jóhan Davidsen <johan.davidsen@fjakkarin.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/johandavidsen/ravnur-client.git"
+    "url": "git@github.com:johandavidsen/myndaveggur.git"
   },
   "license": "MIT",
   "devDependencies": {
