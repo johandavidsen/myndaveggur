@@ -1,9 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import axios from 'axios'
 import ImageLoader from 'react-imageloader'
 
-import './photo-wall.scss'
+//import './photo-wall.scss'
 
 /**
  * @class Photo
@@ -14,15 +15,15 @@ class Photo extends React.Component {
    * @method render
    */
   render () {
-    let { source } = this.props
+    const { source } = this.props
 
     return (
       <ImageLoader
         src={source}
-        wrapper={React.DOM.div}
+        wrapper={React.createFactory('div')}
         // preloader={preloader}
         className='photo-wall-row-image'
-        />
+      />
     )
   }
 }
@@ -31,7 +32,7 @@ class Photo extends React.Component {
  * @prop { string } source -
  */
 Photo.PropTypes = {
-  source: React.PropTypes.string
+  source: PropTypes.string
 }
 
 /**
@@ -56,13 +57,13 @@ class PhotoWall extends React.Component {
     this._screenResize = this._screenResize.bind(this)
   }
 
-  componentWillReceiveProps (nextProps) {
-    const { images } = nextProps
-    if (images.length > 0) {
-      // Build Data structure
-      this.setState({ images: images })
-    }
-  }
+  // componentWillReceiveProps (nextProps) {
+  //  const { images } = nextProps
+  //  if (images.length > 0) {
+  //    // Build Data structure
+  //    this.setState({ images: images })
+  //  }
+  // }
 
   /**
    * @method componentDidMount
@@ -76,7 +77,7 @@ class PhotoWall extends React.Component {
    * @method _screenResize
    */
   _screenResize () {
-    let { wall } = this.refs
+    const { wall } = this.refs
     if (wall) {
       this.setState({ viewPortHeight: wall.clientHeight, viewPortWidth: wall.clientWidth })
     }
@@ -94,16 +95,16 @@ class PhotoWall extends React.Component {
    */
   render () {
     const { images } = this.state
-    let displayRows = []
+    const displayRows = []
     let i = 0
     let c = 0
     let col = 0
     if (this.state.viewPortHeight / 20 > 0.5) col = Math.ceil(this.state.viewPortWidth / 20)
     else col = Math.round(this.state.viewPortWidth / 20)
-    let row = Math.round(this.state.viewPortHeight / 20)
+    const row = Math.round(this.state.viewPortHeight / 20)
     // Build photo grid
     while (++i <= row) {
-      let displayCol = []
+      const displayCol = []
       while (++c <= col) {
         displayCol.push({ src: 'https://unsplash.it/40/40?random' })
       }
@@ -151,14 +152,12 @@ export default class PhotoWallContainer extends React.Component {
         const { data } = response
         // const { link } = headers
         // Get the images from GitHub
-        let images = []
+        const images = []
         // Get url
         data.map((user) => {
           images.push(user.avatar_url)
         })
         this.setState({ images: images })
-        // Possibly fetch more
-        // console.log(link)
       })
   }
 
