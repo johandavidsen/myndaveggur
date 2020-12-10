@@ -1,6 +1,6 @@
 {
   "name": "myndaveggur",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "This is a small webapp called Myndaveggur",
   "main": "lib/index.js",
   "scripts": {
