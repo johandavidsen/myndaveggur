@@ -1,15 +1,11 @@
-
-import PhotoWallContainer from './index'
 import React from 'react'
+import { Photo } from './index'
 
 export default {
   title: 'fjakkarin/PhotoWall',
-  component: PhotoWallContainer
+  component: Photo
 }
 
-const Template = (args) => <PhotoWallContainer {...args} />
+const Template = (args) => <Photo {...args} />
 
 export const Basic = Template.bind({})
-Basic.args = {
-  primary: true
-}

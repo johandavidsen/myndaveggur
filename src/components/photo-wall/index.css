@@ -1,0 +1,39 @@
+.app {
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper img {
+  height: 20px;
+  display: block;
+}
+
+.error {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.meta {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.meta div {
+  margin-right: 2rem;
+}

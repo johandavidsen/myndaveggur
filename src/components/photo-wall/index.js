@@ -1,163 +1,45 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
 import axios from 'axios'
-import ImageLoader from 'react-imageloader'
 
-//import './photo-wall.scss'
+import './index.css'
 
 /**
  * @class Photo
  */
-class Photo extends React.Component {
-
+export class Photo extends React.Component {
   /**
-   * @method render
-   */
-  render () {
-    const { source } = this.props
-
-    return (
-      <ImageLoader
-        src={source}
-        wrapper={React.createFactory('div')}
-        // preloader={preloader}
-        className='photo-wall-row-image'
-      />
-    )
-  }
-}
-
-/**
- * @prop { string } source -
- */
-Photo.PropTypes = {
-  source: PropTypes.string
-}
-
-/**
- * @class PhotoWall
- *
- *
- */
-class PhotoWall extends React.Component {
-
-  /**
-   * @constructor
-   *
    *
    */
   constructor (props) {
     super(props)
     this.state = {
-      viewPortHeight: 0,
-      viewPortWidth: 0,
-      images: []
+      images: [],
+      nextFetch: 'https://api.github.com/users',
+      error: null
     }
-    this._screenResize = this._screenResize.bind(this)
+
+    this._loadImages = this._loadImages.bind(this)
   }
 
-  // componentWillReceiveProps (nextProps) {
-  //  const { images } = nextProps
-  //  if (images.length > 0) {
-  //    // Build Data structure
-  //    this.setState({ images: images })
-  //  }
-  // }
-
-  /**
-   * @method componentDidMount
-   */
   componentDidMount () {
-    window.addEventListener('resize', this._screenResize)
-    this._screenResize({ type: 'resize' })
+    this._loadImages()
   }
 
-  /**
-   * @method _screenResize
-   */
-  _screenResize () {
-    const { wall } = this.refs
-    if (wall) {
-      this.setState({ viewPortHeight: wall.clientHeight, viewPortWidth: wall.clientWidth })
-    }
-  }
-
-  /**
-   * @method componentWillUnmount
-   */
-  componentWillUnmount () {
-    window.removeEventListener('resize', this._screenResize)
-  }
-
-  /**
-   * @method render
-   */
-  render () {
-    const { images } = this.state
-    const displayRows = []
-    let i = 0
-    let c = 0
-    let col = 0
-    if (this.state.viewPortHeight / 20 > 0.5) col = Math.ceil(this.state.viewPortWidth / 20)
-    else col = Math.round(this.state.viewPortWidth / 20)
-    const row = Math.round(this.state.viewPortHeight / 20)
-    // Build photo grid
-    while (++i <= row) {
-      const displayCol = []
-      while (++c <= col) {
-        displayCol.push({ src: 'https://unsplash.it/40/40?random' })
-      }
-      displayRows.push(displayCol)
-      c = 0
-    }
-    //
-    return (
-      <div ref='wall' className='photo-wall'>
-        {displayRows.map((line, i) => {
-          return (
-            <div key={i} className='photo-wall-row'>
-              {line.map((object, c) => {
-                return (<Photo key={c} source={object.src} />)
-              })}
-            </div>
-          )
-        })}
-      </div>
-    )
-  }
-}
-
-/**
- * @exports PhotoWall
- *
- *
- */
-export default class PhotoWallContainer extends React.Component {
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      images: []
-    }
-  }
-
-  /**
-   * @method componentDidMount
-   */
-  componentDidMount () {
-    axios.get('https://api.github.com/users')
+  _loadImages () {
+    const images = this.state.images
+    axios.get(this.state.nextFetch)
       .then((response) => {
-        // , headers
-        const { data } = response
-        // const { link } = headers
-        // Get the images from GitHub
-        const images = []
-        // Get url
-        data.map((user) => {
-          images.push(user.avatar_url)
+        const { data, headers: { link } } = response
+        const nextFetch = link.split(';')[0].slice(1, -1)
+        // eslint-disable-next-line array-callback-return,camelcase
+        data.map(({ avatar_url, login }) => {
+          images.push({ url: avatar_url, name: login })
         })
-        this.setState({ images: images })
+        this.setState({ images: images, nextFetch: nextFetch })
+      })
+      .catch(({ code, message, response }) => {
+        const { status, statusText, data } = response
+        this.setState({ error: { status: status, statusText: statusText, message: data.message } })
       })
   }
 
@@ -165,9 +47,32 @@ export default class PhotoWallContainer extends React.Component {
    * @method render
    */
   render () {
-    const { images } = this.state
+    if (this.state.error) {
+      return (
+        <div className='error'>
+          <div className='meta'>
+            <div>{this.state.error.status}</div>
+            <div>{this.state.error.statusText}</div>
+          </div>
+          <div>
+            {this.state.error.message}
+          </div>
+        </div>
+      )
+    }
+
     return (
-      <PhotoWall images={images} />
+      <div>
+        <div className='app'>
+          <div className='container'>
+            {this.state.images.map((item, index) =>
+              <div className='wrapper' key={index}>
+                <img src={item.url} alt={item.name} />
+              </div>)}
+          </div>
+        </div>
+        <button onClick={this._loadImages}>load</button>
+      </div>
     )
   }
 }
